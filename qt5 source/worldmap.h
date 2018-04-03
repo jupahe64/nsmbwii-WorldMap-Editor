@@ -7,6 +7,13 @@
 class WorldMap
 {
 public:
+    struct Route
+    {
+        int indexWaypoint1, indexWaypoint2;
+        Route();
+        Route(QString waypoint1, QString waypoint2);
+    };
+
     struct WayPoint
     {
         enum Representation{
@@ -32,7 +39,7 @@ public:
         QStringList exitAnims;
         QStringList secretExitAnims;
 
-        QList<Route*> connectedRoutes;
+        QList<WorldMap::Route*> connectedRoutes;
 
         void setRepresentationFromChildBone(QString childBoneName);
 
@@ -42,13 +49,6 @@ public:
         //default constructor
         WayPoint();
     };
-
-    struct Route
-    {
-        int indexWaypoint1, indexWaypoint1;
-        Route();
-        Route(QString waypoint1, QString waypoint2);
-    }
 
     WorldMap();
 

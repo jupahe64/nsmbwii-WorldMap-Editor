@@ -57,6 +57,7 @@ WorldMap::WayPoint::WayPoint(){
 WorldMap::Route::Route()
 {
     indexWaypoint1 = -1;
+    indexWaypoint2 = -1;
 }
 
 WorldMap::Route::Route(QString waypoint1, QString waypoint2)
