@@ -8,37 +8,37 @@ WorldMap::WorldMap()
 void WorldMap::WayPoint::setRepresentationFromChildBone(QString childBoneName)
 {
     if (childBoneName.startsWith("cobKinoko1up"))
-        this->representation = TOAD_GREEN;
+        this->m_representation = TOAD_GREEN;
 
     else if (childBoneName.startsWith("cobKinokoStar"))
-        this->representation = TOAD_YELLOW;
+        this->m_representation = TOAD_YELLOW;
 
     else if (childBoneName.startsWith("cobKinokoRed"))
-        this->representation = TOAD_RED;
+        this->m_representation = TOAD_RED;
 
     else if (childBoneName=="cobToride")
-        this->representation = TOWER;
+        this->m_representation = TOWER;
 
     else if (childBoneName=="cobCastle")
-        this->representation = CASTLE;
+        this->m_representation = CASTLE;
 
     else if (childBoneName=="cobKoopaCastle")
-        this->representation = FINAL_CASTLE;
+        this->m_representation = FINAL_CASTLE;
 
     else if (childBoneName=="cobGhost")
-        this->representation = GHOST;
+        this->m_representation = GHOST;
 
     else if (childBoneName=="cobAnchor")
-        this->representation = ANCHOR;
+        this->m_representation = ANCHOR;
 
     else if (childBoneName=="cobCannon")
-        this->representation = WARP_CANNON;
+        this->m_representation = WARP_CANNON;
 
     else if (childBoneName=="cobPeachCastle")
-        this->representation = PEACHS_CASTLE;
+        this->m_representation = PEACHS_CASTLE;
 
     else
-        this->representation = NONE;
+        this->m_representation = NONE;
 
 }
 
@@ -47,20 +47,14 @@ WorldMap::WayPoint::WayPoint(float x, float y, float z, WorldMap::WayPoint::Repr
     this->x = x;
     this->y = y;
     this->z = z;
-    this->representation = representation;
+    this->m_representation = representation;
 }
 
 WorldMap::WayPoint::WayPoint(){
-    this->representation = NONE;
+    this->m_representation = NONE;
 }
 
 WorldMap::Route::Route()
-{
-    indexWaypoint1 = -1;
-    indexWaypoint2 = -1;
-}
-
-WorldMap::Route::Route(QString waypoint1, QString waypoint2)
 {
 
 }

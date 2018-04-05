@@ -7,12 +7,7 @@
 class WorldMap
 {
 public:
-    struct Route
-    {
-        int indexWaypoint1, indexWaypoint2;
-        Route();
-        Route(QString waypoint1, QString waypoint2);
-    };
+    struct Route;
 
     struct WayPoint
     {
@@ -32,27 +27,34 @@ public:
 
         float x,y,z;
 
-        Representation representation;
+        Representation m_representation;
 
-        QStringList indirectConnections;
-        QStringList events;
-        QStringList exitAnims;
-        QStringList secretExitAnims;
+        QStringList m_indirectConnections;
+        QStringList m_events;
+        QStringList m_exitAnims;
+        QStringList m_secretExitAnims;
 
-        QList<WorldMap::Route*> connectedRoutes;
+        QList<WorldMap::Route*> m_connectedRoutes;
 
         void setRepresentationFromChildBone(QString childBoneName);
 
         //from scratch
-        WayPoint(float x, float y, float z, Representation representation);
+        WayPoint(float x, float y, float z, Representation m_representation);
 
         //default constructor
         WayPoint();
     };
+    struct Route
+    {
+        Route();
+        WayPoint* m_waypoint1;
+        WayPoint* m_waypoint2;
+    };
 
     WorldMap();
 
-    QMap<QString,WayPoint> wayPoints;
+    QMap<QString,WayPoint> m_wayPoints;
+    QMap<QString,Route> m_routes;
 };
 
 #endif // WORLDMAPDEF_H

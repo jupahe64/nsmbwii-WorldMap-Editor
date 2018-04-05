@@ -23,20 +23,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-        worldmap.cpp \
-        glview.cpp \
     FileFormats/csv.cpp \
-    FileFormats/filehelper.cpp
+    FileFormats/filehelper.cpp \
+    glview.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    worldmap.cpp \
 
 HEADERS += \
-        main.h \
-        mainwindow.h \
-        worldmap.h \
-        glview.h \
     FileFormats/csv.h \
-    FileFormats/filehelper.h
+    FileFormats/filehelper.h \
+    glview.h \
+    mainwindow.h \
+    worldmap.h \
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
+
+SUBDIRS += \
+    nsmbwiiWorldMapEditor.pro
+
+DISTFILES += \
+    images/icon.png \
+    images/w2.png \
+    images/w3.png \
+    Shaders/default.fsh \
+    Shaders/default.vsh
+
+RESOURCES += \
+    resources.qrc

@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
@@ -546,14 +549,40 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
+          <widget class="QListWidget" name="listWidget"/>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_7" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="text">
+               <string>Delete</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGraphicsView" name="graphicsView"/>
+         </item>
+         <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Nothing to see here!</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <string>Animation</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox"/>
          </item>
         </layout>
        </widget>
@@ -587,16 +616,30 @@
    </property>
   </action>
   <action name="actionWorld_1">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/res/images/icon.png</normaloff>:/res/images/icon.png</iconset>
+   </property>
    <property name="text">
     <string>World 1</string>
    </property>
   </action>
   <action name="actionWorld_2">
+   <property name="icon">
+    <iconset>
+     <normalon>:/res/images/w2.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>World 2</string>
    </property>
   </action>
   <action name="actionWorld_3">
+   <property name="icon">
+    <iconset>
+     <activeon>:/res/images/w3.png</activeon>
+    </iconset>
+   </property>
    <property name="text">
     <string>World 3 Part 1</string>
    </property>

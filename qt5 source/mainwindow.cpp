@@ -89,6 +89,17 @@ void MainWindow::actionOpen()
     loadPoints(unpackedCSVs.value("W8/pointW8.csv"),8);
     loadPoints(unpackedCSVs.value("W9/pointW9.csv"),9);
 
+    loadRoute(unpackedCSVs.value("W1/routeW1.csv"),0);
+    loadRoute(unpackedCSVs.value("W2/routeW2a.csv"),1);
+    loadRoute(unpackedCSVs.value("W3/routeW3a.csv"),2);
+    loadRoute(unpackedCSVs.value("W3/routeW3b.csv"),3);
+    loadRoute(unpackedCSVs.value("W4/routeW4.csv"),4);
+    loadRoute(unpackedCSVs.value("W5/routeW5.csv"),5);
+    loadRoute(unpackedCSVs.value("W6/routeW6a.csv"),6);
+    loadRoute(unpackedCSVs.value("W7/routeW7.csv"),7);
+    loadRoute(unpackedCSVs.value("W8/routeW8.csv"),8);
+    loadRoute(unpackedCSVs.value("W9/routeW9.csv"),9);
+
     loadWorldMapBones(file, fileName+"/CS_W1.arc", 0);
     loadWorldMapBones(file, fileName+"/CS_W2.arc", 1);
     loadWorldMapBones(file, fileName+"/CS_W3.arc", 2);
@@ -127,7 +138,7 @@ void MainWindow::loadWorldMap()
 {
     ui->listPoints->clear();
     ui->listEvents->clear();
-    foreach (QString key, maps[mapId].wayPoints.keys()) {
+    foreach (QString key, maps[mapId].m_wayPoints.keys()) {
         ui->listPoints->addItem(key);
     }
     ui->openGLWidget->setActiveMap(&maps[mapId]);
@@ -140,31 +151,40 @@ void MainWindow::on_listPoints_currentTextChanged(const QString &currentText)
     ui->listSecretExitAnims->clear();
     ui->listIndirectConnections->clear();
 
-    if (!maps[mapId].wayPoints.contains(currentText))
+    if (!maps[mapId].m_wayPoints.contains(currentText))
         return;
 
     ui->openGLWidget->setSelectedPoint(currentText);
 
-    ui->comboBoxRepresentation->setCurrentIndex(maps[mapId].wayPoints[currentText].representation);
+    ui->comboBoxRepresentation->setCurrentIndex(maps[mapId].m_wayPoints[currentText].m_representation);
 
-    ui->valX->setValue(maps[mapId].wayPoints[currentText].x);
-    ui->valY->setValue(maps[mapId].wayPoints[currentText].y);
-    ui->valZ->setValue(maps[mapId].wayPoints[currentText].z);
+    ui->valX->setValue(maps[mapId].m_wayPoints[currentText].x);
+    ui->valY->setValue(maps[mapId].m_wayPoints[currentText].y);
+    ui->valZ->setValue(maps[mapId].m_wayPoints[currentText].z);
 
-    foreach (QString entry, maps[mapId].wayPoints[currentText].events) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_events) {
         ui->listEvents->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].wayPoints[currentText].exitAnims) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_exitAnims) {
         ui->listExitAnims->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].wayPoints[currentText].secretExitAnims) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_secretExitAnims) {
         ui->listSecretExitAnims->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].wayPoints[currentText].indirectConnections) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_indirectConnections) {
         ui->listIndirectConnections->addItem(entry);
     }
     qDebug() << "selected: " << currentText;
+}
+
+void MainWindow::on_listPoints_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->openGLWidget->setFocus(
+                maps[mapId].m_wayPoints[item->text()].x,
+                maps[mapId].m_wayPoints[item->text()].y,
+                maps[mapId].m_wayPoints[item->text()].z
+                );
 }

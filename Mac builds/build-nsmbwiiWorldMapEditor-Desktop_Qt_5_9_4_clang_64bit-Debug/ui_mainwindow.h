@@ -16,6 +16,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -111,13 +112,21 @@ public:
     QDoubleSpinBox *valZ;
     QWidget *tabPaths;
     QVBoxLayout *verticalLayout_6;
+    QListWidget *listWidget;
+    QWidget *widget_7;
+    QHBoxLayout *horizontalLayout_9;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QGraphicsView *graphicsView;
     QLabel *label_2;
+    QComboBox *comboBox;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(1065, 746);
+        MainWindow->setTabShape(QTabWidget::Rounded);
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QStringLiteral("actionNew"));
         actionOpen = new QAction(MainWindow);
@@ -126,10 +135,19 @@ public:
         actionSave->setObjectName(QStringLiteral("actionSave"));
         actionWorld_1 = new QAction(MainWindow);
         actionWorld_1->setObjectName(QStringLiteral("actionWorld_1"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/res/images/icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionWorld_1->setIcon(icon);
         actionWorld_2 = new QAction(MainWindow);
         actionWorld_2->setObjectName(QStringLiteral("actionWorld_2"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/res/images/w2.png"), QSize(), QIcon::Normal, QIcon::On);
+        actionWorld_2->setIcon(icon1);
         actionWorld_3 = new QAction(MainWindow);
         actionWorld_3->setObjectName(QStringLiteral("actionWorld_3"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/res/images/w3.png"), QSize(), QIcon::Active, QIcon::On);
+        actionWorld_3->setIcon(icon2);
         actionWorld_3_Part_2 = new QAction(MainWindow);
         actionWorld_3_Part_2->setObjectName(QStringLiteral("actionWorld_3_Part_2"));
         actionWorld_4 = new QAction(MainWindow);
@@ -465,11 +483,44 @@ public:
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
+        listWidget = new QListWidget(tabPaths);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+
+        verticalLayout_6->addWidget(listWidget);
+
+        widget_7 = new QWidget(tabPaths);
+        widget_7->setObjectName(QStringLiteral("widget_7"));
+        horizontalLayout_9 = new QHBoxLayout(widget_7);
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
+        pushButton = new QPushButton(widget_7);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+
+        horizontalLayout_9->addWidget(pushButton);
+
+        pushButton_2 = new QPushButton(widget_7);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+
+        horizontalLayout_9->addWidget(pushButton_2);
+
+
+        verticalLayout_6->addWidget(widget_7);
+
+        graphicsView = new QGraphicsView(tabPaths);
+        graphicsView->setObjectName(QStringLiteral("graphicsView"));
+
+        verticalLayout_6->addWidget(graphicsView);
+
         label_2 = new QLabel(tabPaths);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setAlignment(Qt::AlignCenter);
 
         verticalLayout_6->addWidget(label_2);
+
+        comboBox = new QComboBox(tabPaths);
+        comboBox->setObjectName(QStringLiteral("comboBox"));
+
+        verticalLayout_6->addWidget(comboBox);
 
         tabWidget->addTab(tabPaths, QString());
 
@@ -564,7 +615,9 @@ public:
         label_5->setText(QApplication::translate("MainWindow", "y:", Q_NULLPTR));
         label_6->setText(QApplication::translate("MainWindow", "z:", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabPoints), QApplication::translate("MainWindow", "Points", Q_NULLPTR));
-        label_2->setText(QApplication::translate("MainWindow", "Nothing to see here!", Q_NULLPTR));
+        pushButton->setText(QApplication::translate("MainWindow", "Add", Q_NULLPTR));
+        pushButton_2->setText(QApplication::translate("MainWindow", "Delete", Q_NULLPTR));
+        label_2->setText(QApplication::translate("MainWindow", "Animation", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabPaths), QApplication::translate("MainWindow", "Paths", Q_NULLPTR));
     } // retranslateUi
 

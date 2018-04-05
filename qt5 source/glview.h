@@ -15,13 +15,15 @@ private:
     WorldMap *m_activeMap;
     QString m_selectedPoint;
 
+    bool m_focusedOnTarget = true;
+
     QOpenGLShaderProgram *m_defaultShader;
     int m_projMatrixLoc;
     int m_mvMatrixLoc;
     int m_normalMatrixLoc;
     int m_lightPosLoc;
     QMatrix4x4 m_proj;
-    QMatrix4x4 m_camera;
+    float m_cameraDistance = -150;
     QMatrix4x4 m_world;
 
     QPoint m_lastPos;
@@ -33,6 +35,7 @@ public:
     void paintGL();
     void initializeGL();
     void mouseMoveEvent(QMouseEvent *e);
+    void wheelEvent(QWheelEvent *e);
     void resizeGL(int w, int h);
 
     void setActiveMap(WorldMap *map){
@@ -42,6 +45,35 @@ public:
     void setSelectedPoint(QString pointName){
         m_selectedPoint = pointName;
         update();
+    }
+    void setFocus(float x, float y, float z){
+        m_xPos = -x*0.04;
+        m_yPos = -y*0.04;
+        m_zPos = -z*0.04;
+        if(!m_focusedOnTarget){
+            m_focusedOnTarget = true;
+            m_cameraDistance = -150;
+        }
+        update();
+    }
+
+    void colorForKey(QString key){
+        if(key.startsWith('W')){
+            if(key==m_selectedPoint)
+                glColor3f(1,1,0);
+            else
+                glColor3f(0,1,0);
+        }else if(m_activeMap->m_wayPoints[key].m_events.contains("stop")){
+            if(key==m_selectedPoint)
+                glColor3f(0,1,1);
+            else
+                glColor3f(0,0.6,1);
+        }else{
+            if(key==m_selectedPoint)
+                glColor3f(0,0.6,1);
+            else
+                glColor3f(0,0,0.7);
+        }
     }
 };
 

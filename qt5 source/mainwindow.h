@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidget>
 #include <QMainWindow>
 #include "worldmap.h"
 #include <QDebug>
@@ -35,11 +36,42 @@ private:
     void loadPoints(Csv *csv, int mapId){
         foreach (QVector<QStringList> *row, csv->entries) {
             WorldMap::WayPoint point = WorldMap::WayPoint();
-            point.events = row->at(2);
-            point.indirectConnections = row->at(3);
-            point.exitAnims = row->at(4);
-            point.secretExitAnims = row->at(7);
-            maps[mapId].wayPoints.insert(row->at(1).first(),point);
+            point.m_events = row->at(2);
+            point.m_indirectConnections = row->at(3);
+            point.m_exitAnims = row->at(4);
+            point.m_secretExitAnims = row->at(7);
+            maps[mapId].m_wayPoints.insert(row->at(1).first(),point);
+        }
+    }
+
+    void loadRoute(Csv*csv, int mapId){
+        foreach (QVector<QStringList> *row, csv->entries) {
+            QString routeString = row->at(0).first();
+            WorldMap::Route route = WorldMap::Route();
+            QString namePoint1 = routeString.mid(1,4);
+            qDebug() << namePoint1;
+            if(maps[mapId].m_wayPoints.contains(namePoint1)){
+                route.m_waypoint1 = &maps[mapId].m_wayPoints[namePoint1];
+                maps[mapId].m_wayPoints[namePoint1].m_connectedRoutes.append(&route);
+            }else{
+                WorldMap::WayPoint point1 = WorldMap::WayPoint();
+                route.m_waypoint1 = &point1;
+                point1.m_connectedRoutes.append(&route);
+                maps[mapId].m_wayPoints.insert(namePoint1,point1);
+            }
+
+            QString namePoint2 = routeString.mid(5,4);
+            qDebug() << namePoint2;
+            if(maps[mapId].m_wayPoints.contains(namePoint2)){
+                route.m_waypoint2 = &maps[mapId].m_wayPoints[namePoint2];
+                maps[mapId].m_wayPoints[namePoint2].m_connectedRoutes.append(&route);
+            }else{
+                WorldMap::WayPoint point2 = WorldMap::WayPoint();
+                route.m_waypoint2 = &point2;
+                point2.m_connectedRoutes.append(&route);
+                maps[mapId].m_wayPoints.insert(namePoint2,point2);
+            }
+            maps[mapId].m_routes.insert(routeString,route);
         }
     }
 
@@ -140,13 +172,13 @@ private:
 
                 boneName = readNullterminatedString(file);
 
-                if(maps[mapId].wayPoints.contains(boneName)){
+                if(maps[mapId].m_wayPoints.contains(boneName)){
 
                     //read position
                     file.seek(offsets[index+1]+0x38);
-                    maps[mapId].wayPoints[boneName].x = *toFloat(file.read(4));
-                    maps[mapId].wayPoints[boneName].y = *toFloat(file.read(4));
-                    maps[mapId].wayPoints[boneName].z = *toFloat(file.read(4));
+                    maps[mapId].m_wayPoints[boneName].x = *toFloat(file.read(4));
+                    maps[mapId].m_wayPoints[boneName].y = *toFloat(file.read(4));
+                    maps[mapId].m_wayPoints[boneName].z = *toFloat(file.read(4));
 
                     //position is relative so loop through all parent bones
                     int currentOffset = offsets[index+1];
@@ -161,9 +193,9 @@ private:
                         file.seek(currentOffset+0x38);
 
                         //add parent position
-                        maps[mapId].wayPoints[boneName].x += *toFloat(file.read(4));
-                        maps[mapId].wayPoints[boneName].y += *toFloat(file.read(4));
-                        maps[mapId].wayPoints[boneName].z += *toFloat(file.read(4));
+                        maps[mapId].m_wayPoints[boneName].x += *toFloat(file.read(4));
+                        maps[mapId].m_wayPoints[boneName].y += *toFloat(file.read(4));
+                        maps[mapId].m_wayPoints[boneName].z += *toFloat(file.read(4));
                     }
                     file.seek(offsets[index+1]+0x60);
                     qint32 childOffset = qFromBigEndian<qint32>(file.read(4));
@@ -172,7 +204,7 @@ private:
                         file.seek(offsets[index+1]+childOffset+qFromBigEndian<qint32>(file.read(4)));
                         QString childBoneName = readNullterminatedString(file);
                         qDebug() << childBoneName;
-                        maps[mapId].wayPoints[boneName].setRepresentationFromChildBone(childBoneName);
+                        maps[mapId].m_wayPoints[boneName].setRepresentationFromChildBone(childBoneName);
                     }
 
 
@@ -202,6 +234,7 @@ private slots:
     void actionWorld9(){this->mapId = 9;loadWorldMap();}
 
     void on_listPoints_currentTextChanged(const QString &currentText);
+    void on_listPoints_itemDoubleClicked(QListWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H

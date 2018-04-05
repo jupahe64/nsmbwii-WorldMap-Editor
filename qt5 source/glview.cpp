@@ -2,35 +2,8 @@
 #include <QtMath>
 GLView::GLView(QWidget *parent)
 {
-    m_xRot = 135.0;
+    m_xRot = 45.0;
 }
-static const char *defaultShaderVtx =
-    "attribute vec4 vertex;\n"
-    "attribute vec3 normal;\n"
-    "varying vec3 vert;\n"
-    "varying vec3 vertNormal;\n"
-    "varying vec4 v_Color;\n"
-    "uniform mat4 projMatrix;\n"
-    "uniform mat4 mvMatrix;\n"
-    "uniform mat3 normalMatrix;\n"
-    "void main() {\n"
-    "   vert = vertex.xyz;\n"
-    "   vertNormal = normalMatrix * normal;\n"
-    "   v_Color = gl_Color;\n"
-    "   gl_Position = projMatrix * mvMatrix * vertex;\n"
-    "}\n";
-
-static const char *defaultShaderFrag =
-    "varying highp vec3 vert;\n"
-    "varying highp vec3 vertNormal;\n"
-    "uniform highp vec3 lightPos;\n"
-    "varying vec4 v_Color;\n"
-    "void main() {\n"
-    "   //highp vec3 L = normalize(lightPos - vert);\n"
-    "   //highp float NL = max(dot(normalize(vertNormal), L), 0.0);\n"
-    "   //highp vec3 col = clamp(v_Color.xyz * 0.2 + v_Color.xyz * 0.8 * NL, 0.0, 1.0);\n"
-    "   gl_FragColor = v_Color;\n"
-    "}\n";
 
 GLView::~GLView()
 {
@@ -45,10 +18,18 @@ GLView::~GLView()
 void GLView::initializeGL()
 {
     glClearColor(0, 0, 0, 1);
-
     m_defaultShader = new QOpenGLShaderProgram;
-    m_defaultShader->addShaderFromSourceCode(QOpenGLShader::Vertex, defaultShaderVtx);
-    m_defaultShader->addShaderFromSourceCode(QOpenGLShader::Fragment, defaultShaderFrag);
+
+    QFile shader(":/res/Shaders/default.vsh");
+    shader.open(QIODevice::ReadOnly);
+    m_defaultShader->addShaderFromSourceCode(QOpenGLShader::Vertex, QString(shader.readAll()));
+    shader.close();
+
+    shader.setFileName(":/res/Shaders/default.fsh");
+    shader.open(QIODevice::ReadOnly);
+    m_defaultShader->addShaderFromSourceCode(QOpenGLShader::Fragment, QString(shader.readAll()));
+    shader.close();
+
     m_defaultShader->bindAttributeLocation("vertex", 0);
     m_defaultShader->bindAttributeLocation("normal", 1);
     m_defaultShader->link();
@@ -58,8 +39,6 @@ void GLView::initializeGL()
     m_mvMatrixLoc = m_defaultShader->uniformLocation("mvMatrix");
     m_normalMatrixLoc = m_defaultShader->uniformLocation("normalMatrix");
     m_lightPosLoc = m_defaultShader->uniformLocation("lightPos");
-    m_camera.setToIdentity();
-    m_camera.translate(0, 0, -100);
 
     // Light position is fixed.
     m_defaultShader->setUniformValue(m_lightPosLoc, QVector3D(0, 0, 70));
@@ -76,14 +55,40 @@ void GLView::mouseMoveEvent(QMouseEvent *e)
 
     if(e->buttons()==Qt::RightButton){
         m_yRot +=  dx*0.5;
-        m_xRot = fminf(fmaxf(0,m_xRot+dy*0.5),180);
+        m_xRot = fminf(fmaxf(-20,m_xRot+dy*0.5),90);
         update();
     }else if(e->buttons()==Qt::LeftButton){
-        m_xPos +=  dx*10;
-        m_yPos = dy*10;
+        m_xPos += dx * 0.25 * cos(m_yRot*M_PI/180.0);
+        m_zPos += dx * 0.25 * sin(m_yRot*M_PI/180.0);
+
+        m_xPos -= dy * 0.25 * sin(m_xRot*M_PI/180.0)*sin(m_yRot*M_PI/180.0);
+        m_yPos -= dy * 0.25 * cos(m_xRot*M_PI/180.0);
+        m_zPos += dy * 0.25 * sin(m_xRot*M_PI/180.0)*cos(m_yRot*M_PI/180.0);
+        if(m_focusedOnTarget){
+            int dz = m_cameraDistance+150;
+            m_xPos -= dz * cos(m_xRot*M_PI/180.0) * sin(m_yRot*M_PI/180.0);
+            m_yPos += dz * sin(m_xRot*M_PI/180.0);
+            m_zPos += dz * cos(m_xRot*M_PI/180.0) * cos(m_yRot*M_PI/180.0);
+            m_cameraDistance = -150;
+            m_focusedOnTarget = false;
+        }
+
         update();
     }
     m_lastPos = e->pos();
+}
+
+void GLView::wheelEvent(QWheelEvent *e)
+{
+    if(m_focusedOnTarget){
+        m_cameraDistance += e->delta() * 0.25;
+    }else{
+        int dz = e->delta();
+        m_xPos -= dz * 0.25 * cos(m_xRot*M_PI/180.0) * sin(m_yRot*M_PI/180.0);
+        m_yPos += dz * 0.25 * sin(m_xRot*M_PI/180.0);
+        m_zPos += dz * 0.25 * cos(m_xRot*M_PI/180.0) * cos(m_yRot*M_PI/180.0);
+    }
+    update();
 }
 
 void GLView::resizeGL(int w, int h)
@@ -98,9 +103,10 @@ void GLView::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_world.setToIdentity();
+    m_world.translate(0, 0, m_cameraDistance);
+    m_world.rotate(m_xRot, 1, 0, 0);
+    m_world.rotate(m_yRot, 0, 1, 0);
     m_world.translate(m_xPos, m_yPos, m_zPos);
-    m_world.rotate(180.0f + m_xRot, 1, 0, 0);
-    m_world.rotate(m_yRot, 0, 0, 1);
 
 
     m_world.scale(0.04);
@@ -108,7 +114,7 @@ void GLView::paintGL()
 
     m_defaultShader->bind();
     m_defaultShader->setUniformValue(m_projMatrixLoc, m_proj);
-    m_defaultShader->setUniformValue(m_mvMatrixLoc, m_camera * m_world);
+    m_defaultShader->setUniformValue(m_mvMatrixLoc,  m_world);
     QMatrix3x3 normalMatrix = m_world.normalMatrix();
     m_defaultShader->setUniformValue(m_normalMatrixLoc, normalMatrix);
 
@@ -123,25 +129,37 @@ void GLView::paintGL()
     */
     if(m_activeMap!=NULL){
         glBegin(GL_QUADS);
-        foreach (QString key, m_activeMap->wayPoints.keys()) {
-            if(key.startsWith('W')){
-                if(key==m_selectedPoint)
-                    glColor3f(1,1,0);
-                else
-                    glColor3f(0,1,0);
-            }else{
-                if(key==m_selectedPoint)
-                    glColor3f(0,1,1);
-                else
-                    glColor3f(0,0,1);
-            }
-            float x = m_activeMap->wayPoints[key].x;
-            float y = m_activeMap->wayPoints[key].y;
-            float z = m_activeMap->wayPoints[key].z;
-            glVertex3f(x-10,-z-10,y);
-            glVertex3f(x+10,-z-10,y);
-            glVertex3f(x+10,-z+10,y);
-            glVertex3f(x-10,-z+10,y);
+        foreach (QString key, m_activeMap->m_wayPoints.keys()) {
+            colorForKey(key);
+
+            float x = m_activeMap->m_wayPoints[key].x;
+            float y = m_activeMap->m_wayPoints[key].y;
+            float z = m_activeMap->m_wayPoints[key].z;
+            glVertex3f(x-10,y,z-10);
+            glVertex3f(x+10,y,z-10);
+            glVertex3f(x+10,y,z+10);
+            glVertex3f(x-10,y,z+10);
+
+        }
+        glEnd();
+
+        glBegin(GL_LINES);
+        foreach (QString key, m_activeMap->m_routes.keys()) {
+            QString keyPoint1 = key.mid(1,4);
+            colorForKey(keyPoint1);
+
+            glVertex3f(m_activeMap->m_wayPoints[keyPoint1].x,
+                       m_activeMap->m_wayPoints[keyPoint1].y,
+                       m_activeMap->m_wayPoints[keyPoint1].z
+                       );
+
+            QString keyPoint2 = key.mid(5,4);
+            colorForKey(keyPoint2);
+
+            glVertex3f(m_activeMap->m_wayPoints[keyPoint2].x,
+                       m_activeMap->m_wayPoints[keyPoint2].y,
+                       m_activeMap->m_wayPoints[keyPoint2].z
+                       );
 
         }
         glEnd();
