@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/res">
-        <file>Shaders/default.fsh</file>
-        <file>Shaders/default.vsh</file>
-        <file>images/icon.png</file>
-        <file>images/w2.png</file>
-        <file>images/w3.png</file>
-    </qresource>
-</RCC>
