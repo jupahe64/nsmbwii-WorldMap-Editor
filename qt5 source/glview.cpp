@@ -1,4 +1,5 @@
 #include "glview.h"
+#include <QPainter>
 #include <QtMath>
 GLView::GLView(QWidget *parent)
 {
@@ -49,12 +50,24 @@ void GLView::initializeGL()
     glEnable(GL_COLOR_MATERIAL);
 }
 
+void GLView::mousePressEvent(QMouseEvent *e)
+{
+    if (e->x()>m_ui_left){
+        if(e->y()>m_ui_top+50){
+            zoom(-120);
+        }else if(e->y()>m_ui_top&&e->y()<m_ui_top+m_ui_height){
+            zoom(120);
+        }
+    }
+}
+
 void GLView::mouseMoveEvent(QMouseEvent *e)
 {
     int dx = e->x() - m_lastPos.x();
     int dy = e->y() - m_lastPos.y();
 
-    if(e->buttons()==Qt::RightButton){
+    if(e->buttons()==Qt::RightButton||
+            (e->buttons()==Qt::LeftButton&&e->modifiers().testFlag(Qt::ControlModifier))){
         m_yRot +=  dx*0.5;
         m_xRot = fminf(fmaxf(-20,m_xRot+dy*0.5),90);
         update();
@@ -81,10 +94,15 @@ void GLView::mouseMoveEvent(QMouseEvent *e)
 
 void GLView::wheelEvent(QWheelEvent *e)
 {
+    zoom(e->delta());
+}
+
+void GLView::zoom(int amount)
+{
     if(m_focusedOnTarget){
-        m_cameraDistance += e->delta() * 0.25;
+        m_cameraDistance += amount * 0.25;
     }else{
-        int dz = e->delta();
+        int dz = amount;
         m_xPos -= dz * 0.25 * cos(m_xRot*M_PI/180.0) * sin(m_yRot*M_PI/180.0);
         m_yPos += dz * 0.25 * sin(m_xRot*M_PI/180.0);
         m_zPos += dz * 0.25 * cos(m_xRot*M_PI/180.0) * cos(m_yRot*M_PI/180.0);
@@ -96,6 +114,10 @@ void GLView::resizeGL(int w, int h)
 {
     m_proj.setToIdentity();
     m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 1000.0f);
+
+    m_ui_left = w-50;
+    m_ui_top =  h-100;
+    m_ui_height = 100;
 }
 
 void GLView::paintGL()
@@ -108,6 +130,7 @@ void GLView::paintGL()
     m_world.rotate(m_xRot, 1, 0, 0);
     m_world.rotate(m_yRot, 0, 1, 0);
     m_world.translate(m_xPos, m_yPos, m_zPos);
+
 
 
     m_world.scale(0.04f);
@@ -173,4 +196,15 @@ void GLView::paintGL()
     qDebug() << "paintGL5";
     m_defaultShader->release();
     qDebug() << "paintGL6";
+    QPainter painter(this);
+    painter.translate(m_ui_left, m_ui_top);
+    painter.setBrush(QColor(100,100,100));
+    painter.setPen(QPen(QColor(0,0,0,0)));
+    painter.drawRect(0,0,100,100);
+
+    painter.setBrush(QColor(200,200,200));
+    painter.drawRect(10,20,30,10);
+    painter.drawRect(10,20,30,10);
+    painter.drawRect(20,10,10,30);
+    painter.drawRect(10,70,30,10);
 }

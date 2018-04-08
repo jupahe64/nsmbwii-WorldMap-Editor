@@ -31,14 +31,19 @@ private:
     QPoint m_lastPos;
     float m_xPos, m_yPos, m_zPos;
     float m_xRot, m_yRot;
+
+    int m_ui_left, m_ui_top, m_ui_height;
 public:
     GLView(QWidget *parent = 0);
     ~GLView();
     void paintGL();
     void initializeGL();
+    void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *e);
     void resizeGL(int w, int h);
+
+    void zoom(int amount);
 
     void setActiveMap(WorldMap *map){
         m_activeMap = map;
