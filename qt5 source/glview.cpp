@@ -3,7 +3,7 @@
 #include <QtMath>
 GLView::GLView(QWidget *parent)
 {
-    m_xRot = 45.0;
+
 }
 
 GLView::~GLView()
@@ -122,7 +122,6 @@ void GLView::resizeGL(int w, int h)
 
 void GLView::paintGL()
 {
-    qDebug() << "paintGL1";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_world.setToIdentity();
@@ -135,35 +134,21 @@ void GLView::paintGL()
 
     m_world.scale(0.04f);
 
-    qDebug() << "paintGL2";
-
     m_defaultShader->bind();
     m_defaultShader->setUniformValue(m_projMatrixLoc, m_proj);
     m_defaultShader->setUniformValue(m_mvMatrixLoc,  m_world);
     QMatrix3x3 normalMatrix = m_world.normalMatrix();
     m_defaultShader->setUniformValue(m_normalMatrixLoc, normalMatrix);
 
-    /*
-    glColor3f(1,0,0);
-    glBegin(GL_QUADS);
-    glVertex3f(-10,-10,0);
-    glVertex3f(10,-10,0);
-    glVertex3f(10,10,0);
-    glVertex3f(-10,10,0);
-    glEnd();
-    */
-
-    qDebug() << "paintGL3";
-
     if(m_activeMap!=NULL){
-        qDebug() << "paintGL4";
+        qDebug() << "paintGL";
         glBegin(GL_QUADS);
         foreach (QString key, m_activeMap->m_wayPoints.keys()) {
             colorForKey(key);
 
-            float x = m_activeMap->m_wayPoints[key].x;
-            float y = m_activeMap->m_wayPoints[key].y;
-            float z = m_activeMap->m_wayPoints[key].z;
+            float x = m_activeMap->m_wayPoints[key]->x;
+            float y = m_activeMap->m_wayPoints[key]->y;
+            float z = m_activeMap->m_wayPoints[key]->z;
             glVertex3f(x-10,y,z-10);
             glVertex3f(x+10,y,z-10);
             glVertex3f(x+10,y,z+10);
@@ -177,25 +162,25 @@ void GLView::paintGL()
             QString keyPoint1 = key.mid(1,4);
             colorForKey(keyPoint1);
 
-            glVertex3f(m_activeMap->m_wayPoints[keyPoint1].x,
-                       m_activeMap->m_wayPoints[keyPoint1].y,
-                       m_activeMap->m_wayPoints[keyPoint1].z
+            glVertex3f(m_activeMap->m_routes[key]->m_waypoint1->x,
+                       m_activeMap->m_routes[key]->m_waypoint1->y,
+                       m_activeMap->m_routes[key]->m_waypoint1->z
                        );
 
             QString keyPoint2 = key.mid(5,4);
             colorForKey(keyPoint2);
 
-            glVertex3f(m_activeMap->m_wayPoints[keyPoint2].x,
-                       m_activeMap->m_wayPoints[keyPoint2].y,
-                       m_activeMap->m_wayPoints[keyPoint2].z
+            glVertex3f(m_activeMap->m_routes[key]->m_waypoint2->x,
+                       m_activeMap->m_routes[key]->m_waypoint2->y,
+                       m_activeMap->m_routes[key]->m_waypoint2->z
                        );
 
         }
         glEnd();
     }
-    qDebug() << "paintGL5";
+
     m_defaultShader->release();
-    qDebug() << "paintGL6";
+    qDebug() << "paintGL UI";
     QPainter painter(this);
     painter.translate(m_ui_left, m_ui_top);
     painter.setBrush(QColor(100,100,100));

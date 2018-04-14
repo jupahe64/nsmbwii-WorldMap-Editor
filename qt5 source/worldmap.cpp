@@ -58,3 +58,8 @@ WorldMap::Route::Route()
 {
 
 }
+
+WorldMap::RoutePath::RoutePath()
+{
+
+}

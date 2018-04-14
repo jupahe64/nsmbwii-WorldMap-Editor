@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     this->setWindowTitle("nsmbwii Worldmap Editor");
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::actionOpen);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::actionSave);
@@ -71,7 +72,6 @@ void MainWindow::actionOpen()
     loadRoute(unpackedCSVs.value("W9/routeW9.csv"),9);
 
     loadWorldMapBones(file, fileName+"/CS_W1.arc", 0);
-
     loadWorldMapBones(file, fileName+"/CS_W2.arc", 1);
     loadWorldMapBones(file, fileName+"/CS_W3.arc", 2);
     loadWorldMapBones(file, fileName+"/CS_W3.arc", 3,1);
@@ -108,11 +108,15 @@ void MainWindow::actionSave()
 void MainWindow::loadWorldMap()
 {
     ui->listPoints->clear();
-    ui->listEvents->clear();
+    ui->listPaths->clear();
     foreach (QString key, maps[mapId].m_wayPoints.keys()) {
         ui->listPoints->addItem(key);
     }
-    ui->openGLWidget->setActiveMap(&maps[mapId]);
+    foreach (QString key, maps[mapId].m_routePaths.keys()) {
+        ui->listPaths->addItem(key);
+    }
+    ui->openGLWidget->setActiveMap(&maps[mapId],mapId);
+    ui->shapeView->setActiveMap(&maps[mapId]);
 }
 
 void MainWindow::on_listPoints_currentTextChanged(const QString &currentText)
@@ -127,35 +131,56 @@ void MainWindow::on_listPoints_currentTextChanged(const QString &currentText)
 
     ui->openGLWidget->setSelectedPoint(currentText);
 
-    ui->comboBoxRepresentation->setCurrentIndex(maps[mapId].m_wayPoints[currentText].m_representation);
+    ui->comboBoxRepresentation->setCurrentIndex(maps[mapId].m_wayPoints[currentText]->m_representation);
 
-    ui->valX->setValue(maps[mapId].m_wayPoints[currentText].x);
-    ui->valY->setValue(maps[mapId].m_wayPoints[currentText].y);
-    ui->valZ->setValue(maps[mapId].m_wayPoints[currentText].z);
+    ui->valX->setValue(maps[mapId].m_wayPoints[currentText]->x);
+    ui->valY->setValue(maps[mapId].m_wayPoints[currentText]->y);
+    ui->valZ->setValue(maps[mapId].m_wayPoints[currentText]->z);
 
-    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_events) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText]->m_events) {
         ui->listEvents->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_exitAnims) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText]->m_exitAnims) {
         ui->listExitAnims->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_secretExitAnims) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText]->m_secretExitAnims) {
         ui->listSecretExitAnims->addItem(entry);
     }
 
-    foreach (QString entry, maps[mapId].m_wayPoints[currentText].m_indirectConnections) {
+    foreach (QString entry, maps[mapId].m_wayPoints[currentText]->m_indirectConnections) {
         ui->listIndirectConnections->addItem(entry);
     }
     qDebug() << "selected: " << currentText;
 }
 
+void MainWindow::on_listPaths_currentTextChanged(const QString &currentText)
+{
+    ui->shapeView->setSelectedPath(currentText);
+}
+
 void MainWindow::on_listPoints_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->openGLWidget->setFocus(
-                maps[mapId].m_wayPoints[item->text()].x,
-                maps[mapId].m_wayPoints[item->text()].y,
-                maps[mapId].m_wayPoints[item->text()].z
+                maps[mapId].m_wayPoints[item->text()]->x,
+                maps[mapId].m_wayPoints[item->text()]->y,
+                maps[mapId].m_wayPoints[item->text()]->z
                 );
+}
+
+void MainWindow::on_listExitAnims_itemDoubleClicked(QListWidgetItem *item)
+{
+    QList<QListWidgetItem*> matches = ui->listPaths->findItems(item->text(),Qt::MatchExactly);
+    if (matches.length()==0) return;
+    ui->tabWidget->setCurrentIndex(1);
+    ui->listPaths->setCurrentItem(matches.first());
+}
+
+void MainWindow::on_listSecretExitAnims_itemDoubleClicked(QListWidgetItem *item)
+{
+    QList<QListWidgetItem*> matches = ui->listPaths->findItems(item->text(),Qt::MatchExactly);
+    if (matches.length()==0) return;
+    ui->tabWidget->setCurrentIndex(1);
+    ui->listPaths->setCurrentItem(matches.first());
 }
