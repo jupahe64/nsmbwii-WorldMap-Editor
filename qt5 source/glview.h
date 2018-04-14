@@ -6,16 +6,20 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLFunctions_2_0>
+#include <GL/GLU.h>
 #include <qevent.h>
-#include "worldmap.h"
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+#include "mainwindow.h"
 
-class GLView : public QOpenGLWidget, protected QOpenGLFunctions
+class GLView : public QOpenGLWidget, protected QOpenGLFunctions_2_0
 {
     Q_OBJECT
 
 private:
     WorldMap *m_activeMap = NULL;
     QString m_selectedPoint;
+    int m_worldNumber;
 
     bool m_focusedOnTarget = true;
 
@@ -45,8 +49,34 @@ public:
 
     void zoom(int amount);
 
-    void setActiveMap(WorldMap *map){
+    void setActiveMap(WorldMap *map, int id){
+        if(id<3)
+            m_worldNumber = id+1;
+        else
+            m_worldNumber = id;
         m_activeMap = map;
+        QString startPoint  = QString("WXS0").replace("X",QString::number(m_worldNumber));
+        QString altStartPoint  = QString("WXS1").replace("X",QString::number(m_worldNumber));
+
+        if (m_activeMap->m_wayPoints.contains(startPoint))
+            setFocus(m_activeMap->m_wayPoints[startPoint]->x,
+                     m_activeMap->m_wayPoints[startPoint]->y,
+                     m_activeMap->m_wayPoints[startPoint]->z
+                     );
+        else if (m_activeMap->m_wayPoints.contains(altStartPoint))
+            setFocus(m_activeMap->m_wayPoints[altStartPoint]->x,
+                     m_activeMap->m_wayPoints[altStartPoint]->y,
+                     m_activeMap->m_wayPoints[altStartPoint]->z
+                     );
+        else if (m_activeMap->m_wayPoints.contains("Fl01"))
+            setFocus(m_activeMap->m_wayPoints["Fl01"]->x,
+                     m_activeMap->m_wayPoints["Fl01"]->y,
+                     m_activeMap->m_wayPoints["Fl01"]->z
+                     );
+        else
+            setFocus(0,0,0);
+        m_xRot = 45.0;
+        m_yRot = 0;
         update();
     }
     void setSelectedPoint(QString pointName){
@@ -70,7 +100,7 @@ public:
                 glColor3f(1,1,0);
             else
                 glColor3f(0,1,0);
-        }else if(m_activeMap->m_wayPoints[key].m_events.contains("stop")){
+        }else if(m_activeMap->m_wayPoints[key]->m_events.contains("stop")){
             if(key==m_selectedPoint)
                 glColor3f(0,1,1);
             else

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1065</width>
-    <height>748</height>
+    <height>764</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,12 @@
    <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
      <widget class="GLView" name="openGLWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="mouseTracking">
        <bool>true</bool>
       </property>
@@ -80,7 +86,7 @@
   </widget>
   <widget class="QDockWidget" name="propertyPanel">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -88,7 +94,7 @@
    <property name="minimumSize">
     <size>
      <width>496</width>
-     <height>675</height>
+     <height>691</height>
     </size>
    </property>
    <property name="baseSize">
@@ -110,6 +116,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -119,7 +131,26 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QListWidget" name="listPoints"/>
+          <widget class="QListWidget" name="listPoints">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::InternalMove</enum>
+           </property>
+           <property name="movement">
+            <enum>QListView::Snap</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QWidget" name="widget" native="true">
@@ -127,7 +158,7 @@
             <item>
              <widget class="QPushButton" name="btnAddPoint">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="text">
                <string>Add</string>
@@ -221,26 +252,24 @@
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>64</height>
+             <height>10</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
           <widget class="QTabWidget" name="tabWidget_2">
-           <property name="font">
-            <font>
-             <pointsize>7</pointsize>
-             <weight>50</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-             <underline>false</underline>
-             <stylestrategy>PreferDefault</stylestrategy>
-             <kerning>true</kerning>
-            </font>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
@@ -252,7 +281,7 @@
             <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>3</number>
+            <number>0</number>
            </property>
            <property name="iconSize">
             <size>
@@ -284,7 +313,14 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <widget class="QListWidget" name="listEvents"/>
+              <widget class="QListWidget" name="listEvents">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_2" native="true">
@@ -293,11 +329,6 @@
                  <widget class="QPushButton" name="btnAddEvent">
                   <property name="enabled">
                    <bool>false</bool>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>13</pointsize>
-                   </font>
                   </property>
                   <property name="text">
                    <string>Add</string>
@@ -308,11 +339,6 @@
                  <widget class="QPushButton" name="btnDeleteEvent">
                   <property name="enabled">
                    <bool>false</bool>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>13</pointsize>
-                   </font>
                   </property>
                   <property name="text">
                    <string>Delete</string>
@@ -330,7 +356,14 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QListWidget" name="listExitAnims"/>
+              <widget class="QListWidget" name="listExitAnims">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_4" native="true">
@@ -339,11 +372,6 @@
                  <widget class="QPushButton" name="btnAddExitAnim">
                   <property name="enabled">
                    <bool>false</bool>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>13</pointsize>
-                   </font>
                   </property>
                   <property name="text">
                    <string>Add</string>
@@ -354,11 +382,6 @@
                  <widget class="QPushButton" name="btnDeleteExitAnim">
                   <property name="enabled">
                    <bool>false</bool>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>13</pointsize>
-                   </font>
                   </property>
                   <property name="text">
                    <string>Delete</string>
@@ -376,7 +399,14 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
-              <widget class="QListWidget" name="listSecretExitAnims"/>
+              <widget class="QListWidget" name="listSecretExitAnims">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_5" native="true">
@@ -412,7 +442,14 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
-              <widget class="QListWidget" name="listIndirectConnections"/>
+              <widget class="QListWidget" name="listIndirectConnections">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_6" native="true">
@@ -549,20 +586,39 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QListWidget" name="listWidget"/>
+          <widget class="QListWidget" name="listPaths">
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::InternalMove</enum>
+           </property>
+           <property name="movement">
+            <enum>QListView::Snap</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QWidget" name="widget_7" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="btnAddPath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Add</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="btnDeletePath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Delete</string>
               </property>
@@ -572,7 +628,17 @@
           </widget>
          </item>
          <item>
-          <widget class="QGraphicsView" name="graphicsView"/>
+          <widget class="ShapeView" name="shapeView" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_2">
@@ -582,7 +648,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox"/>
+          <widget class="QLineEdit" name="valPathAnimation">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -686,6 +756,12 @@
    <class>GLView</class>
    <extends>QOpenGLWidget</extends>
    <header>glview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ShapeView</class>
+   <extends>QWidget</extends>
+   <header>shapeview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

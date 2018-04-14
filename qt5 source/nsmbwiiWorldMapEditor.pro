@@ -10,6 +10,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     worldmap.cpp \
+    shapeview.cpp
 
 HEADERS += \
     FileFormats/csv.h \
@@ -17,6 +18,7 @@ HEADERS += \
     glview.h \
     mainwindow.h \
     worldmap.h \
+    shapeview.h
 
 FORMS += \
     mainwindow.ui
@@ -34,7 +36,11 @@ DISTFILES += \
 RESOURCES += \
     resources.qrc
 
-QT           += widgets
+QT           += core
+                widgets
                 gui
+                opengl
+
+LIBS += opengl32.lib
 
 

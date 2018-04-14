@@ -49,12 +49,21 @@ public:
         Route();
         WayPoint* m_waypoint1;
         WayPoint* m_waypoint2;
+        QString m_animation;
+        bool *m_thornPhases = new bool[3];
+    };
+
+    struct RoutePath
+    {
+        RoutePath();
+        QList<WayPoint*> m_nodes;
     };
 
     WorldMap();
 
-    QMap<QString,WayPoint> m_wayPoints;
-    QMap<QString,Route> m_routes;
+    QMap<QString,WayPoint*> m_wayPoints;
+    QMap<QString,Route*> m_routes;
+    QMap<QString,RoutePath*> m_routePaths;
 };
 
 #endif // WORLDMAPDEF_H

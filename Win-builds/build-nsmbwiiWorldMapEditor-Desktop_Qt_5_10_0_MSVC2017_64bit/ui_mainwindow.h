@@ -126,7 +126,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1065, 748);
+        MainWindow->resize(1065, 764);
         MainWindow->setTabShape(QTabWidget::Rounded);
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QStringLiteral("actionNew"));
@@ -248,7 +248,7 @@ public:
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         btnAddPoint = new QPushButton(widget);
         btnAddPoint->setObjectName(QStringLiteral("btnAddPoint"));
-        btnAddPoint->setEnabled(false);
+        btnAddPoint->setEnabled(true);
 
         horizontalLayout_3->addWidget(btnAddPoint);
 
@@ -291,15 +291,6 @@ public:
         tabWidget_2->setObjectName(QStringLiteral("tabWidget_2"));
         sizePolicy2.setHeightForWidth(tabWidget_2->sizePolicy().hasHeightForWidth());
         tabWidget_2->setSizePolicy(sizePolicy2);
-        QFont font;
-        font.setPointSize(7);
-        font.setBold(false);
-        font.setItalic(false);
-        font.setUnderline(false);
-        font.setWeight(50);
-        font.setKerning(true);
-        font.setStyleStrategy(QFont::PreferDefault);
-        tabWidget_2->setFont(font);
         tabWidget_2->setStyleSheet(QStringLiteral(""));
         tabWidget_2->setTabPosition(QTabWidget::North);
         tabWidget_2->setTabShape(QTabWidget::Rounded);
@@ -332,16 +323,12 @@ public:
         btnAddEvent = new QPushButton(widget_2);
         btnAddEvent->setObjectName(QStringLiteral("btnAddEvent"));
         btnAddEvent->setEnabled(false);
-        QFont font1;
-        font1.setPointSize(13);
-        btnAddEvent->setFont(font1);
 
         horizontalLayout_2->addWidget(btnAddEvent);
 
         btnDeleteEvent = new QPushButton(widget_2);
         btnDeleteEvent->setObjectName(QStringLiteral("btnDeleteEvent"));
         btnDeleteEvent->setEnabled(false);
-        btnDeleteEvent->setFont(font1);
 
         horizontalLayout_2->addWidget(btnDeleteEvent);
 
@@ -371,14 +358,12 @@ public:
         btnAddExitAnim = new QPushButton(widget_4);
         btnAddExitAnim->setObjectName(QStringLiteral("btnAddExitAnim"));
         btnAddExitAnim->setEnabled(false);
-        btnAddExitAnim->setFont(font1);
 
         horizontalLayout_6->addWidget(btnAddExitAnim);
 
         btnDeleteExitAnim = new QPushButton(widget_4);
         btnDeleteExitAnim->setObjectName(QStringLiteral("btnDeleteExitAnim"));
         btnDeleteExitAnim->setEnabled(false);
-        btnDeleteExitAnim->setFont(font1);
 
         horizontalLayout_6->addWidget(btnDeleteExitAnim);
 
@@ -605,7 +590,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        tabWidget_2->setCurrentIndex(2);
+        tabWidget_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
