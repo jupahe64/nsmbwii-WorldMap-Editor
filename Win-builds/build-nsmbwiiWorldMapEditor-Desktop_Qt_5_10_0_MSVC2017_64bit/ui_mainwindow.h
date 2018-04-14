@@ -16,10 +16,10 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -32,6 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glview.h"
+#include "shapeview.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -112,14 +113,14 @@ public:
     QDoubleSpinBox *valZ;
     QWidget *tabPaths;
     QVBoxLayout *verticalLayout_6;
-    QListWidget *listWidget;
+    QListWidget *listPaths;
     QWidget *widget_7;
     QHBoxLayout *horizontalLayout_9;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QGraphicsView *graphicsView;
+    QPushButton *btnAddPath;
+    QPushButton *btnDeletePath;
+    ShapeView *shapeView;
     QLabel *label_2;
-    QComboBox *comboBox;
+    QLineEdit *valPathAnimation;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -170,6 +171,11 @@ public:
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         openGLWidget = new GLView(centralWidget);
         openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(openGLWidget->sizePolicy().hasHeightForWidth());
+        openGLWidget->setSizePolicy(sizePolicy);
         openGLWidget->setMouseTracking(true);
 
         horizontalLayout_5->addWidget(openGLWidget);
@@ -192,12 +198,12 @@ public:
         MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
         propertyPanel = new QDockWidget(MainWindow);
         propertyPanel->setObjectName(QStringLiteral("propertyPanel"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(propertyPanel->sizePolicy().hasHeightForWidth());
-        propertyPanel->setSizePolicy(sizePolicy);
-        propertyPanel->setMinimumSize(QSize(496, 675));
+        QSizePolicy sizePolicy1(QSizePolicy::Ignored, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(propertyPanel->sizePolicy().hasHeightForWidth());
+        propertyPanel->setSizePolicy(sizePolicy1);
+        propertyPanel->setMinimumSize(QSize(496, 691));
         propertyPanel->setBaseSize(QSize(800, 0));
         propertyPanel->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
         propertyPanel->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
@@ -209,6 +215,11 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         tabWidget = new QTabWidget(dockWidgetContents_4);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        QSizePolicy sizePolicy2(QSizePolicy::Ignored, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
+        tabWidget->setSizePolicy(sizePolicy2);
         tabPoints = new QWidget();
         tabPoints->setObjectName(QStringLiteral("tabPoints"));
         verticalLayout_2 = new QVBoxLayout(tabPoints);
@@ -217,6 +228,15 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         listPoints = new QListWidget(tabPoints);
         listPoints->setObjectName(QStringLiteral("listPoints"));
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(listPoints->sizePolicy().hasHeightForWidth());
+        listPoints->setSizePolicy(sizePolicy3);
+        listPoints->setDragEnabled(false);
+        listPoints->setDragDropOverwriteMode(false);
+        listPoints->setDragDropMode(QAbstractItemView::InternalMove);
+        listPoints->setMovement(QListView::Snap);
 
         verticalLayout_2->addWidget(listPoints);
 
@@ -263,12 +283,14 @@ public:
 
         verticalLayout_2->addWidget(comboBoxRepresentation);
 
-        verticalSpacer = new QSpacerItem(20, 64, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_2->addItem(verticalSpacer);
 
         tabWidget_2 = new QTabWidget(tabPoints);
         tabWidget_2->setObjectName(QStringLiteral("tabWidget_2"));
+        sizePolicy2.setHeightForWidth(tabWidget_2->sizePolicy().hasHeightForWidth());
+        tabWidget_2->setSizePolicy(sizePolicy2);
         QFont font;
         font.setPointSize(7);
         font.setBold(false);
@@ -296,6 +318,8 @@ public:
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         listEvents = new QListWidget(tabAttributes);
         listEvents->setObjectName(QStringLiteral("listEvents"));
+        sizePolicy2.setHeightForWidth(listEvents->sizePolicy().hasHeightForWidth());
+        listEvents->setSizePolicy(sizePolicy2);
 
         verticalLayout_3->addWidget(listEvents);
 
@@ -333,6 +357,8 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         listExitAnims = new QListWidget(tabAnimsOnExit);
         listExitAnims->setObjectName(QStringLiteral("listExitAnims"));
+        sizePolicy2.setHeightForWidth(listExitAnims->sizePolicy().hasHeightForWidth());
+        listExitAnims->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(listExitAnims);
 
@@ -368,6 +394,8 @@ public:
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         listSecretExitAnims = new QListWidget(tabAnimsOnSecretExit);
         listSecretExitAnims->setObjectName(QStringLiteral("listSecretExitAnims"));
+        sizePolicy2.setHeightForWidth(listSecretExitAnims->sizePolicy().hasHeightForWidth());
+        listSecretExitAnims->setSizePolicy(sizePolicy2);
 
         verticalLayout_4->addWidget(listSecretExitAnims);
 
@@ -401,6 +429,8 @@ public:
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
         listIndirectConnections = new QListWidget(tabIndirectConnections);
         listIndirectConnections->setObjectName(QStringLiteral("listIndirectConnections"));
+        sizePolicy2.setHeightForWidth(listIndirectConnections->sizePolicy().hasHeightForWidth());
+        listIndirectConnections->setSizePolicy(sizePolicy2);
 
         verticalLayout_5->addWidget(listIndirectConnections);
 
@@ -494,10 +524,12 @@ public:
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        listWidget = new QListWidget(tabPaths);
-        listWidget->setObjectName(QStringLiteral("listWidget"));
+        listPaths = new QListWidget(tabPaths);
+        listPaths->setObjectName(QStringLiteral("listPaths"));
+        listPaths->setDragDropMode(QAbstractItemView::InternalMove);
+        listPaths->setMovement(QListView::Snap);
 
-        verticalLayout_6->addWidget(listWidget);
+        verticalLayout_6->addWidget(listPaths);
 
         widget_7 = new QWidget(tabPaths);
         widget_7->setObjectName(QStringLiteral("widget_7"));
@@ -505,33 +537,47 @@ public:
         horizontalLayout_9->setSpacing(6);
         horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
-        pushButton = new QPushButton(widget_7);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        btnAddPath = new QPushButton(widget_7);
+        btnAddPath->setObjectName(QStringLiteral("btnAddPath"));
+        btnAddPath->setEnabled(false);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(btnAddPath->sizePolicy().hasHeightForWidth());
+        btnAddPath->setSizePolicy(sizePolicy4);
 
-        horizontalLayout_9->addWidget(pushButton);
+        horizontalLayout_9->addWidget(btnAddPath);
 
-        pushButton_2 = new QPushButton(widget_7);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        btnDeletePath = new QPushButton(widget_7);
+        btnDeletePath->setObjectName(QStringLiteral("btnDeletePath"));
+        btnDeletePath->setEnabled(false);
 
-        horizontalLayout_9->addWidget(pushButton_2);
+        horizontalLayout_9->addWidget(btnDeletePath);
 
 
         verticalLayout_6->addWidget(widget_7);
 
-        graphicsView = new QGraphicsView(tabPaths);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
+        shapeView = new ShapeView(tabPaths);
+        shapeView->setObjectName(QStringLiteral("shapeView"));
+        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(shapeView->sizePolicy().hasHeightForWidth());
+        shapeView->setSizePolicy(sizePolicy5);
+        shapeView->setAutoFillBackground(false);
 
-        verticalLayout_6->addWidget(graphicsView);
+        verticalLayout_6->addWidget(shapeView);
 
         label_2 = new QLabel(tabPaths);
         label_2->setObjectName(QStringLiteral("label_2"));
 
         verticalLayout_6->addWidget(label_2);
 
-        comboBox = new QComboBox(tabPaths);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
+        valPathAnimation = new QLineEdit(tabPaths);
+        valPathAnimation->setObjectName(QStringLiteral("valPathAnimation"));
+        valPathAnimation->setEnabled(false);
 
-        verticalLayout_6->addWidget(comboBox);
+        verticalLayout_6->addWidget(valPathAnimation);
 
         tabWidget->addTab(tabPaths, QString());
 
@@ -559,7 +605,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        tabWidget_2->setCurrentIndex(3);
+        tabWidget_2->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -624,8 +670,8 @@ public:
         label_5->setText(QApplication::translate("MainWindow", "y:", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "z:", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabPoints), QApplication::translate("MainWindow", "Points", nullptr));
-        pushButton->setText(QApplication::translate("MainWindow", "Add", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindow", "Delete", nullptr));
+        btnAddPath->setText(QApplication::translate("MainWindow", "Add", nullptr));
+        btnDeletePath->setText(QApplication::translate("MainWindow", "Delete", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Animation", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabPaths), QApplication::translate("MainWindow", "Paths", nullptr));
     } // retranslateUi
