@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 4.5.1, 2018-04-14T23:31:57. -->
+=======
+<!-- Written by QtCreator 4.6.0, 2018-04-14T21:00:15. -->
+>>>>>>> 8b1a5666d5037227b71c663487e156dd80c173f9
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -304,7 +308,11 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">nsmbwiiWorldMapEditor</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">nsmbwiiWorldMapEditor2</value>
+<<<<<<< HEAD
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/juliusheld/Documents/GitHub/nsmbwii-WorldMap-Editor/qt5 source/nsmbwiiWorldMapEditor.pro</value>
+=======
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/jupah/Documents/GitHub/nsmbwii-WorldMap-Editor/qt5 source/nsmbwiiWorldMapEditor.pro</value>
+>>>>>>> 8b1a5666d5037227b71c663487e156dd80c173f9
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">nsmbwiiWorldMapEditor.pro</value>
